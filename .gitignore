@@ -1,0 +1,16 @@
+# Virtual Environment
+venv/
+
+# Environment Variables (API keys - never upload these!)
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Mac system files
+.DS_Store
+
+# VS Code settings
+.vscode/
