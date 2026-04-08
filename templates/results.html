@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Scan Results for: <span class="target">{{ target }}</span></h2>
+
+    <div class="results-grid">
+
+        <!-- VirusTotal -->
+        <div class="card">
+            <h3>🦠 VirusTotal</h3>
+            {% if results.virustotal.error %}
+                <p class="error">{{ results.virustotal.error }}</p>
+            {% else %}
+                <p class="malicious">Malicious: {{ results.virustotal.malicious }}</p>
+                <p class="suspicious">Suspicious: {{ results.virustotal.suspicious }}</p>
+                <p class="harmless">Harmless: {{ results.virustotal.harmless }}</p>
+            {% endif %}
+        </div>
+
+        <!-- AbuseIPDB -->
+        <div class="card">
+            <h3>🚨 AbuseIPDB</h3>
+            {% if results.abuseipdb.error %}
+                <p class="error">{{ results.abuseipdb.error }}</p>
+            {% else %}
+                <p>Abuse Score: <strong>{{ results.abuseipdb.abuse_score }}%</strong></p>
+                <p>Country: {{ results.abuseipdb.country }}</p>
+                <p>Total Reports: {{ results.abuseipdb.total_reports }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Shodan -->
+        <div class="card">
+            <h3>🔎 Shodan</h3>
+            {% if results.shodan.error %}
+                <p class="error">{{ results.shodan.error }}</p>
+            {% else %}
+                <p>Organization: {{ results.shodan.org }}</p>
+                <p>Country: {{ results.shodan.country }}</p>
+                <p>Open Ports: {{ results.shodan.ports }}</p>
+            {% endif %}
+        </div>
+
+    </div>
+    <a href="/" class="back-btn">← Scan Another</a>
+</div>
+{% endblock %}

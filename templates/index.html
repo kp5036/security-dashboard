@@ -2,7 +2,17 @@
 
 {% block content %}
 <div class="container">
-    <h2>Welcome to Security Dashboard</h2>
-    <p>Enter a URL or IP address to scan for threats.</p>
+    <h2>🔍 Scan a URL or IP Address</h2>
+    <p>Enter a URL or IP address to check for security threats.</p>
+
+    <form action="/scan" method="POST">
+        <input 
+            type="text" 
+            name="target" 
+            placeholder="e.g. 8.8.8.8 or http://example.com"
+            required
+        />
+        <button type="submit">Scan Now</button>
+    </form>
 </div>
 {% endblock %}
