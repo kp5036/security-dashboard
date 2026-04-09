@@ -4,6 +4,19 @@
 <div class="container">
     <h2>Scan Results for: <span class="target">{{ target }}</span></h2>
 
+    <!-- Threat Level Badge -->
+    {% set malicious = results.virustotal.malicious | default(0) %}
+    {% set abuse_score = results.abuseipdb.abuse_score | default(0) %}
+    {% set suspicious = results.virustotal.suspicious | default(0) %}
+
+    {% if malicious > 0 or abuse_score > 50 %}
+        <div class="badge high">🔴 HIGH RISK</div>
+    {% elif suspicious > 0 or abuse_score > 20 %}
+        <div class="badge medium">🟡 SUSPICIOUS</div>
+    {% else %}
+        <div class="badge low">🟢 CLEAN</div>
+    {% endif %}
+
     <div class="results-grid">
 
         <!-- VirusTotal -->
@@ -15,6 +28,7 @@
                 <p class="malicious">Malicious: {{ results.virustotal.malicious }}</p>
                 <p class="suspicious">Suspicious: {{ results.virustotal.suspicious }}</p>
                 <p class="harmless">Harmless: {{ results.virustotal.harmless }}</p>
+                <canvas id="vtChart" width="200" height="200"></canvas>
             {% endif %}
         </div>
 
@@ -27,6 +41,7 @@
                 <p>Abuse Score: <strong>{{ results.abuseipdb.abuse_score }}%</strong></p>
                 <p>Country: {{ results.abuseipdb.country }}</p>
                 <p>Total Reports: {{ results.abuseipdb.total_reports }}</p>
+                <canvas id="abuseChart" width="200" height="200"></canvas>
             {% endif %}
         </div>
 
@@ -45,4 +60,62 @@
     </div>
     <a href="/" class="back-btn">← Scan Another</a>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // VirusTotal Chart
+    const vtCtx = document.getElementById('vtChart');
+    if (vtCtx) {
+        new Chart(vtCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Malicious', 'Suspicious', 'Harmless', 'Undetected'],
+                datasets: [{
+                    data: [
+                        {{ results.virustotal.malicious | default(0) }},
+                        {{ results.virustotal.suspicious | default(0) }},
+                        {{ results.virustotal.harmless | default(0) }},
+                        {{ results.virustotal.undetected | default(0) }}
+                    ],
+                    backgroundColor: ['#f85149', '#e3b341', '#3fb950', '#8b949e'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#ffffff', font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    }
+
+    // AbuseIPDB Chart
+    const abuseCtx = document.getElementById('abuseChart');
+    if (abuseCtx) {
+        const score = {{ results.abuseipdb.abuse_score | default(0) }};
+        new Chart(abuseCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Abuse Score', 'Clean'],
+                datasets: [{
+                    data: [score, 100 - score],
+                    backgroundColor: ['#f85149', '#3fb950'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#ffffff', font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

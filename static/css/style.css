@@ -120,3 +120,68 @@ form button:hover {
 .back-btn:hover {
     text-decoration: underline;
 }
+
+/* Threat Badge */
+.badge {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.high { background-color: #3d1a1a; color: #f85149; border: 2px solid #f85149; }
+.medium { background-color: #3d2e0a; color: #e3b341; border: 2px solid #e3b341; }
+.low { background-color: #0d2b16; color: #3fb950; border: 2px solid #3fb950; }
+
+/* Chart sizing */
+canvas {
+    margin-top: 20px;
+    max-width: 100%;
+}
+
+/* Threat Badge */
+.badge {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.high { background-color: #3d1a1a; color: #f85149; border: 2px solid #f85149; }
+.medium { background-color: #3d2e0a; color: #e3b341; border: 2px solid #e3b341; }
+.low { background-color: #0d2b16; color: #3fb950; border: 2px solid #3fb950; }
+
+/* Chart sizing */
+canvas {
+    margin-top: 20px;
+    max-width: 100%;
+}
+
+/* Loading Spinner */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #30363d;
+    border-top: 5px solid #58a6ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.scanning-text {
+    color: #58a6ff;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
