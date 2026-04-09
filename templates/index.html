@@ -15,4 +15,29 @@
         <button type="submit">Scan Now</button>
     </form>
 </div>
+
+{% if history %}
+<div class="container" style="margin-top: 20px;">
+    <h3>🕓 Recent Scans</h3>
+    <table class="history-table">
+        <thead>
+            <tr>
+                <th>Target</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for scan in history | reverse %}
+            <tr>
+                <td>{{ scan.target }}</td>
+                <td class="{{ 'malicious' if scan.threat == 'HIGH RISK' else 'harmless' }}">
+                    {{ scan.threat }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
 {% endblock %}
