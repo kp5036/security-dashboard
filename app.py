@@ -64,9 +64,16 @@ def check_abuseipdb(target):
         "country": data["data"]["countryCode"],
         "total_reports": data["data"]["totalReports"]
     }
-def check_shodan(ip):
+
+def check_shodan(target):
+    import re
+    ip_pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$'
+    
+    if not re.match(ip_pattern, target):
+        return {"error": "Shodan only supports IP addresses, not URLs"}
+    
     response = requests.get(
-        f"https://api.shodan.io/shodan/host/{ip}?key={SHODAN_API_KEY}"
+        f"https://api.shodan.io/shodan/host/{target}?key={SHODAN_API_KEY}"
     )
     data = response.json()
     return {
@@ -74,7 +81,6 @@ def check_shodan(ip):
         "org": data.get("org", "Unknown"),
         "country": data.get("country_name", "Unknown")
     }
-
 @app.route("/")
 def home():
     return render_template("index.html", history=scan_history)
