@@ -5,6 +5,22 @@ A full-stack threat intelligence dashboard that scans URLs and IP addresses usin
 🌐 **Live Demo:** https://security-dashboard-rqw4.onrender.com
 
 ---
+---
+
+## Screenshots
+
+### Homepage
+
+![Security Dashboard Homepage](screenshots/homepage.png)
+
+### Scan Results
+
+![Security Dashboard Scan Results](screenshots/results.png)
+
+### Scanning State
+
+![Security Dashboard Scanning State](screenshots/scanning.png)
+
 
 ## Overview
 
