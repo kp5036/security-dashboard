@@ -1,42 +1,64 @@
 # 🔐 Security Dashboard
 
-A full-stack threat intelligence web app that scans URLs and IP addresses for security threats using real-time data from multiple cybersecurity APIs.
+A full-stack threat intelligence dashboard that scans URLs and IP addresses using multiple cybersecurity APIs and visualizes risk indicators in a clean web interface.
 
 🌐 **Live Demo:** https://security-dashboard-rqw4.onrender.com
 
+---
+
+## Overview
+
+Security Dashboard is a Python/Flask web application built to practice cybersecurity automation, API integration, and threat intelligence workflows. The app allows a user to submit a URL or IP address and receive security context from multiple external sources, including malware detection, IP reputation, abuse history, and exposed service information.
+
+This project demonstrates how security analysts can combine multiple intelligence sources into a single dashboard for faster triage and decision-making.
+
+---
+
 ## Features
-- 🦠 **VirusTotal** — scans for malware across 70+ antivirus engines
-- 🚨 **AbuseIPDB** — checks IP reputation and abuse history
-- 🔎 **Shodan** — reveals open ports and organization info
-- 🟢 Threat level badge (CLEAN / SUSPICIOUS / HIGH RISK)
-- 📊 Interactive doughnut charts for visual threat analysis
-- 🕓 Recent scan history on homepage
+
+- URL and IP threat scanning
+- VirusTotal integration for malware and URL reputation checks
+- AbuseIPDB integration for IP abuse confidence scoring
+- Shodan integration for open port and organization intelligence
+- Dynamic threat-level badge: CLEAN, SUSPICIOUS, or HIGH RISK
+- Interactive Chart.js visualizations for scan results
+- Recent scan history displayed on the homepage
+- API key handling through environment variables
+- Public deployment using Render
+
+---
+
+## Security Concepts Demonstrated
+
+- Threat intelligence aggregation
+- URL and IP reputation analysis
+- API-based security automation
+- Risk scoring and alert-style classification
+- Open-source intelligence fundamentals
+- Secure API key handling with environment variables
+- Basic security dashboard design for analyst workflows
+
+---
 
 ## Tech Stack
-- **Backend:** Python, Flask
-- **Frontend:** HTML, CSS, JavaScript, Chart.js
-- **APIs:** VirusTotal, AbuseIPDB, Shodan
-- **Deployment:** Render
 
-## Run Locally
-```bash
-git clone https://github.com/kp5036/security-dashboard.git
-cd security-dashboard
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+**Backend:** Python, Flask  
+**Frontend:** HTML, CSS, JavaScript, Chart.js  
+**Security APIs:** VirusTotal, AbuseIPDB, Shodan  
+**Deployment:** Render, gunicorn  
+**Development Tools:** Git, GitHub, CLI
 
-Create a `.env` file with your API keys:
-```
-VIRUSTOTAL_API_KEY=your_key
-ABUSEIPDB_API_KEY=your_key
-SHODAN_API_KEY=your_key
-```
+---
 
-```bash
-python app.py
-```
+## Architecture
 
-## Author
-Krish Patel — [GitHub](https://github.com/kp5036) | [LinkedIn](https://linkedin.com/in/krishpatel21) 
+```text
+User Input
+   ↓
+Flask Backend
+   ↓
+VirusTotal API / AbuseIPDB API / Shodan API
+   ↓
+Threat Scoring Logic
+   ↓
+Chart.js Dashboard + Threat Badge + Scan History%
