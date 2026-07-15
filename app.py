@@ -13,16 +13,17 @@ SHODAN_API_KEY = os.getenv("SHODAN_API_KEY")
 
 def check_virustotal(target):
     headers = {"x-apikey": VIRUSTOTAL_API_KEY}
-    
+
     # Check if it's an IP or URL
     import re
     ip_pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$'
-    
+
     if re.match(ip_pattern, target):
         # Use IP endpoint
         response = requests.get(
             f"https://www.virustotal.com/api/v3/ip_addresses/{target}",
-            headers=headers
+            headers=headers,
+            timeout=10
         )
         data = response.json()
         stats = data["data"]["attributes"]["last_analysis_stats"]
@@ -31,32 +32,35 @@ def check_virustotal(target):
         response = requests.post(
             "https://www.virustotal.com/api/v3/urls",
             headers=headers,
-            data={"url": target}
+            data={"url": target},
+            timeout=10
         )
         result = response.json()
         url_id = result["data"]["id"]
         analysis = requests.get(
             f"https://www.virustotal.com/api/v3/analyses/{url_id}",
-            headers=headers
+            headers=headers,
+            timeout=10
         )
         data = analysis.json()
         stats = data["data"]["attributes"]["stats"]
-    
+
     return stats
 
 def check_abuseipdb(target):
     import re
     ip_pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$'
-    
+
     # AbuseIPDB only works with IPs
     if not re.match(ip_pattern, target):
         return {"error": "AbuseIPDB only supports IP addresses, not URLs"}
-    
+
     headers = {"Key": ABUSEIPDB_API_KEY, "Accept": "application/json"}
     response = requests.get(
         "https://api.abuseipdb.com/api/v2/check",
         headers=headers,
-        params={"ipAddress": target, "maxAgeInDays": 90}
+        params={"ipAddress": target, "maxAgeInDays": 90},
+        timeout=10
     )
     data = response.json()
     return {
@@ -68,12 +72,13 @@ def check_abuseipdb(target):
 def check_shodan(target):
     import re
     ip_pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$'
-    
+
     if not re.match(ip_pattern, target):
         return {"error": "Shodan only supports IP addresses, not URLs"}
-    
+
     response = requests.get(
-        f"https://api.shodan.io/shodan/host/{target}?key={SHODAN_API_KEY}"
+        f"https://api.shodan.io/shodan/host/{target}?key={SHODAN_API_KEY}",
+        timeout=10
     )
     data = response.json()
     return {
@@ -89,7 +94,7 @@ def home():
 def scan():
     target = request.form.get("target")
     results = {}
-    
+
     try:
         results["virustotal"] = check_virustotal(target)
     except Exception as e:
@@ -112,8 +117,7 @@ def scan():
     if len(scan_history) > 5:
         scan_history.pop(0)
 
-    #return render_template("results.html", target=target, results=results)
     return render_template("results.html", target=target, results=results)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.environ.get("FLASK_DEBUG", "false").lower() == "true")
